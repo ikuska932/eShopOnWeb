@@ -1,4 +1,4 @@
-name: CI - eShopOnWeb
+name: .NET CI
 
 on:
   push:
@@ -11,31 +11,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 8.0.x
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
 
-      - name: Restore dependencies
-        run: dotnet restore
+    - name: Restore dependencies
+      run: dotnet restore
 
-      - name: Build solution
-        run: dotnet build --no-restore --configuration Release
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
 
-      - name: Run Unit Tests
-        run: dotnet test tests/UnitTests/UnitTests.csproj --no-build --configuration Release --logger trx
-
-      - name: Run Public API Integration Tests
-        run: dotnet test tests/PublicApiIntegrationTests/PublicApiIntegrationTests.csproj --no-build --configuration Release --logger trx
-
-      - name: Run Functional Tests (UI)
-        run: dotnet test tests/FunctionalTests/FunctionalTests.csproj --no-build --configuration Release --logger trx
-
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        with:
-          name: TestResults
-          path: '**/TestResults/*.trx'
+    - name: Run tests
+      run: dotnet test --no-build --configuration Release --verbosity normal
