@@ -1,5 +1,8 @@
 using Xunit;
-using ApplicationCore.Services;
+using Microsoft.eShopWeb.ApplicationCore;
+using Microsoft.eShopWeb.ApplicationCore.Entities;
+using Microsoft.eShopWeb.ApplicationCore.Services;
+using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 
 public class BasketServiceTests
 {
