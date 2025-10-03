@@ -1,13 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>  
-    <RootNamespace>BlazorShared</RootNamespace>
-    <AssemblyName>BlazorShared</AssemblyName>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="BlazorInputFile" />
-    <PackageReference Include="FluentValidation" />
   </ItemGroup>
 
 </Project>

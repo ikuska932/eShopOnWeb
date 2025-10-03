@@ -1,54 +1,34 @@
 ﻿using System;
 using System.Timers;
 
-namespace BlazorAdmin.Services;
-
-public enum ToastLevel
+namespace BlazorAdmin.Services
 {
-    Info,
-    Success,
-    Warning,
-    Error
-}
+    public class ToastService
+    {
+        public event Action<string, string> OnShow;
+        public event Action OnHide;
 
-public class ToastService : IDisposable
-{
-    public event Action<string, ToastLevel> OnShow;
-    public event Action OnHide;
-    private Timer Countdown;
-    public void ShowToast(string message, ToastLevel level)
-    {
-        OnShow?.Invoke(message, level);
-        StartCountdown();
-    }
-    private void StartCountdown()
-    {
-        SetCountdown();
-        if (Countdown.Enabled)
+        private Timer Countdown;
+
+        public void ShowToast(string message, string title, int duration = 3000)
         {
-            Countdown.Stop();
-            Countdown.Start();
-        }
-        else
-        {
-            Countdown.Start();
-        }
-    }
-    private void SetCountdown()
-    {
-        if (Countdown == null)
-        {
-            Countdown = new Timer(3000);
+            OnShow?.Invoke(message, title);
+
+            if (Countdown != null)
+            {
+                Countdown.Stop();
+                Countdown.Dispose();
+            }
+
+            Countdown = new Timer(duration);
             Countdown.Elapsed += HideToast;
             Countdown.AutoReset = false;
+            Countdown.Start();
         }
-    }
-    private void HideToast(object source, ElapsedEventArgs args)
-    {
-        OnHide?.Invoke();
-    }
-    public void Dispose()
-    {
-        Countdown?.Dispose();
+
+        private void HideToast(object source, ElapsedEventArgs e)
+        {
+            OnHide?.Invoke();
+        }
     }
 }
